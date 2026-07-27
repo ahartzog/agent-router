@@ -3,7 +3,7 @@
 Living reference for known model strengths and weaknesses. Claude reads this before routing decisions.
 Updated after any delegation that produces surprising results (better or worse than expected).
 
-**Last checked:** 2026-07-20
+**Last checked:** 2026-07-27
 
 ---
 
@@ -24,9 +24,9 @@ Updated after any delegation that produces surprising results (better or worse t
 
 **Capacity warning:** Gemini Pro (and Flash) hit 429 "exhausted capacity" errors frequently during peak hours via the Google Cloud Code proxy. Do not rely on Gemini for time-sensitive or blocking tasks without a fallback plan. If you get 429s, fall back to Claude solo or gpt-5.6-terra and note the failure.
 
-**Notes:** Default choice for capability-gap routing when available. Strong adversarial reviewer. Gemini 3.5 Pro exists but is not yet publicly available (as of 2026-07-20, was targeted for July 17 but has slipped; enterprise Vertex preview only).
+**Notes:** Default choice for capability-gap routing when available. Strong adversarial reviewer. Gemini 3.5 Pro still not publicly available as of 2026-07-27 — Google confirmed July 21 it is "months behind schedule" and currently "testing with partners" with no new public launch date given. Source: [9to5Google, July 16](https://9to5google.com/2026/07/16/gemini-3-5-pro-delays/)
 
-**Last updated:** 2026-07-20
+**Last updated:** 2026-07-27
 
 ---
 
@@ -128,9 +128,9 @@ Updated after any delegation that produces surprising results (better or worse t
 - Speed-sensitive tasks (significantly slower than standard models)
 - Simple or routine tasks (wasteful)
 
-**Notes:** Use selectively. Reserve for high-stakes decisions where reasoning depth matters more than speed or cost. Most routing should default to gpt-5.6-terra; use Sol or o3 only when reasoning depth is the bottleneck. Invocation syntax updated from `-c model=` to `-m` flag.
+**Notes:** Use selectively. Reserve for high-stakes decisions where reasoning depth matters more than speed or cost. Most routing should default to gpt-5.6-terra; use Sol or o3 only when reasoning depth is the bottleneck. Invocation syntax updated from `-c model=` to `-m` flag. Heads-up: dated o3 API snapshot model IDs (e.g., `o3-2025-04-16`) are scheduled for API deprecation December 11, 2026; the bare `o3` alias used above is unaffected. Source: [privatedevops.com](https://privatedevops.com/news/openai-retires-gpt-5-o3-snapshots-december-2026)
 
-**Last updated:** 2026-07-20
+**Last updated:** 2026-07-27
 
 ---
 
