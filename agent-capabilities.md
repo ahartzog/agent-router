@@ -3,7 +3,7 @@
 Living reference for known model strengths and weaknesses. Claude reads this before routing decisions.
 Updated after any delegation that produces surprising results (better or worse than expected).
 
-**Last checked:** 2026-07-27
+**Last checked:** 2026-08-03
 
 ---
 
@@ -24,9 +24,11 @@ Updated after any delegation that produces surprising results (better or worse t
 
 **Capacity warning:** Gemini Pro (and Flash) hit 429 "exhausted capacity" errors frequently during peak hours via the Google Cloud Code proxy. Do not rely on Gemini for time-sensitive or blocking tasks without a fallback plan. If you get 429s, fall back to Claude solo or gpt-5.6-terra and note the failure.
 
-**Notes:** Default choice for capability-gap routing when available. Strong adversarial reviewer. Gemini 3.5 Pro still not publicly available as of 2026-07-27 — Google confirmed July 21 it is "months behind schedule" and currently "testing with partners" with no new public launch date given. Source: [9to5Google, July 16](https://9to5google.com/2026/07/16/gemini-3-5-pro-delays/)
+**Notes:** Default choice for capability-gap routing when available. Strong adversarial reviewer. Gemini 3.5 Pro still not publicly available as of 2026-08-03 — delayed multiple times; no new launch date confirmed.
 
-**Last updated:** 2026-07-27
+**CLI transition (June 18, 2026):** Gemini CLI was retired for consumer users (Google AI Pro/Ultra, free tier) and replaced by Antigravity CLI (`agy` command). Enterprise users with Gemini Code Assist Standard or Enterprise licenses retain full `gemini` CLI access — the invocation above remains valid for that path. Consumer users: `agy --model="gemini-2.5-pro"`. Source: [Google Developers Blog](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/)
+
+**Last updated:** 2026-08-03
 
 ---
 
@@ -47,7 +49,9 @@ Updated after any delegation that produces surprising results (better or worse t
 
 **Notes:** Use for efficiency routing — low-judgment tasks where speed matters more than quality. Gemini 3.5 Flash is now available (see section below) and is the preferred Flash-tier model for new tasks.
 
-**Last updated:** 2026-04-08
+**CLI transition:** See Gemini 2.5 Pro section. Enterprise path (`gemini` CLI) unaffected. Consumer path now `agy --model="gemini-2.5-flash"`.
+
+**Last updated:** 2026-08-03
 
 ---
 
@@ -66,9 +70,11 @@ Updated after any delegation that produces surprising results (better or worse t
 
 **Capacity warning:** Subject to the same 429 quota constraints as other Gemini models via the Cloud Code proxy. There are also known compatibility issues in some CLI versions (GitHub issues #27258, #27789) — if `gemini-3.5-flash` returns errors, fall back to `gemini-2.5-flash`.
 
-**Notes:** Released May 19, 2026. Delivers near-Pro intelligence at Flash-tier cost and speed. Preferred over Gemini 2.5 Flash for new efficiency-routing tasks when available. Source: [Google Gemini 3.5 blog](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/)
+**Notes:** Released May 19, 2026. Delivers near-Pro intelligence at Flash-tier cost and speed. Preferred over Gemini 2.5 Flash for new efficiency-routing tasks when available. This is the default model in Antigravity CLI (consumer path). Source: [Google Gemini 3.5 blog](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/)
 
-**Last updated:** 2026-07-20
+**CLI transition:** Enterprise path (`gemini` CLI) unaffected. Consumer path now uses `agy --model="gemini-3.5-flash"` (this is the Antigravity CLI default, so bare `agy` also works). Source: [Getting started with Antigravity CLI](https://medium.com/google-cloud/getting-started-with-antigravity-cli-3565d5db1e92)
+
+**Last updated:** 2026-08-03
 
 ---
 
@@ -87,9 +93,11 @@ Updated after any delegation that produces surprising results (better or worse t
 - Very long context (smaller window than Gemini)
 - Tasks requiring deep tool-use orchestration
 
-**Notes:** Codex CLI is OpenAI's official coding agent CLI (not a general-purpose GPT CLI — it's optimized for code tasks). Reliable fallback when Gemini is at capacity since it uses a separate quota/provider. GPT-5.4 is still active and not deprecated as of 2026-07-20. GPT-5.6 (Sol/Terra/Luna) is now available and preferred for new tasks — see section below. Use gpt-5.4-mini for efficiency routing when GPT-5.6 Luna isn't available. Invocation syntax updated from `-c model=` to `-m` flag.
+**Notes:** Codex CLI is OpenAI's official coding agent CLI (not a general-purpose GPT CLI — it's optimized for code tasks). Reliable fallback when Gemini is at capacity since it uses a separate quota/provider. GPT-5.6 (Sol/Terra/Luna) is now available and preferred for new tasks — see section below. Use gpt-5.4-mini for efficiency routing when GPT-5.6 Luna isn't available. Invocation syntax updated from `-c model=` to `-m` flag.
 
-**Last updated:** 2026-07-20
+**DEPRECATION WARNING (imminent):** GPT-5.4 and GPT-5.4-mini will be removed from Codex for ChatGPT-authenticated users on **August 31, 2026**. Migrate configurations to `gpt-5.6-terra` (replaces gpt-5.4) and `gpt-5.6-luna` (replaces gpt-5.4-mini). API-key-authenticated Codex sessions retain access after August 31. Source: [Codex Model Sunset guide](https://codex.danielvaughan.com/2026/06/02/codex-model-sunset-june-july-2026-deprecation-timeline-migration-paths-config-recipes/)
+
+**Last updated:** 2026-08-03
 
 ---
 
