@@ -78,16 +78,17 @@ Updated after any delegation that produces surprising results (better or worse t
 
 ---
 
-## GPT-5.4 / GPT-5.4-mini (via Codex CLI)
+## Codex CLI default model (gpt-6-astra as of 2026-09-27; was GPT-5.4)
 
-**Invocation:** `codex exec -m gpt-5.4 "[prompt]"`
-**Fast/cheap:** `codex exec -m gpt-5.4-mini "[prompt]"`
+**Invocation:** `codex exec --sandbox read-only "[prompt]"` (no model pin: the ChatGPT-account login rejects `gpt-5.4` with "not supported when using Codex with a ChatGPT account" - matches the Aug 31 removal below. The CLI default, `gpt-6-astra` per `~/.codex/config.toml`, worked 2026-09-27 and 2026-10-10 on codex-cli 0.160.0)
+**Fast/cheap:** `codex exec -m gpt-5.6-luna "[prompt]"` (UNVERIFIED on the ChatGPT account; `gpt-5.4-mini` is removed)
 
 **Strong at:**
 - General code reasoning and review
 - Adversarial second opinions (different training distribution than both Claude and Gemini)
 - Isolated/sandboxed code execution
 - Tasks where OpenAI's approach produces different intuitions
+- **Image generation with accurate text** (`image_generation` feature, stable/on in codex-cli 0.160.0): 2026-10-10, 10/10 party-invite images rendered ~70 words of copy with zero text errors, in distinct styles (pulp poster, typewriter dossier, Ouija board, art deco, cartoon). ~1 min each; 4 parallel runs fine. `-i <file>` attaches a reference image (put it after the prompt - see agent-router SKILL.md)
 
 **Weak at:**
 - Very long context (smaller window than Gemini)
@@ -97,7 +98,7 @@ Updated after any delegation that produces surprising results (better or worse t
 
 **DEPRECATION WARNING (imminent):** GPT-5.4 and GPT-5.4-mini will be removed from Codex for ChatGPT-authenticated users on **August 31, 2026**. Migrate configurations to `gpt-5.6-terra` (replaces gpt-5.4) and `gpt-5.6-luna` (replaces gpt-5.4-mini). API-key-authenticated Codex sessions retain access after August 31. Source: [Codex Model Sunset guide](https://codex.danielvaughan.com/2026/06/02/codex-model-sunset-june-july-2026-deprecation-timeline-migration-paths-config-recipes/)
 
-**Last updated:** 2026-08-03
+**Last updated:** 2026-10-10 (default-model invocation from the 2026-09-27 StickWars review; image generation verified on Halloween invites). Previously 2026-08-03
 
 ---
 

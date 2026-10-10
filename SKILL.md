@@ -36,33 +36,42 @@ Never silently delegate. The user must know when another model is involved.
 
 ## Invocation Templates
 
-### Gemini 2.5 Pro — long context, adversarial review, research synthesis
+### Gemini (auto) — default; system picks best available model
+```bash
+gemini \
+  -p "[role framing + task + relevant context]" \
+  --yolo
+```
+Omit `-m` entirely — `auto` is the configured default in `~/.gemini/settings.json`. This routes to the best Gemini 3 model available without hitting Pro capacity limits as aggressively.
+
+### Gemini Pro — when you explicitly need the most capable model
 ```bash
 gemini \
   -p "[role framing + task + relevant context]" \
   --yolo \
-  -m gemini-2.5-pro
+  -m gemini-3-pro-preview
 ```
+Use only when task clearly requires Pro reasoning. Expect 429s during peak hours.
 
-### Gemini 2.5 Flash — fast, cheap, low-stakes subtasks
+**Codex model pins:** the ChatGPT-account login rejects `-c model="gpt-5.4"` ("not supported when using Codex with a ChatGPT account" — re-confirmed 2026-10-10). Omit `-c model=` and use the CLI default from `~/.codex/config.toml` (`gpt-6-astra` as of 2026-10-10). Other pins below are UNVERIFIED on this account.
+
+### Codex default — general reasoning, code review, adversarial second opinion
 ```bash
-gemini \
-  -p "[task]" \
-  --yolo \
-  -m gemini-2.5-flash
+codex exec --skip-git-repo-check "[role framing + task + relevant context]"
 ```
 
-### GPT-4o — general reasoning, code review, adversarial second opinion
+### Codex (sandboxed) — untrusted or destructive execution
 ```bash
-codex exec -c model="gpt-4o" "[role framing + task + relevant context]"
+codex exec --sandbox read-only "[task]"
 ```
 
-### GPT-4o (sandboxed) — untrusted or destructive execution
+### Codex image generation — illustrated images with accurate text
 ```bash
-codex exec -c model="gpt-4o" --sandbox "[task]"
+codex exec --skip-git-repo-check "Use your image generation tool to create ONE image: [style]. Text must appear EXACTLY as written: [copy]. Copy the image into the current working directory as [name].png and print its path."
 ```
+Attach a reference image with `-i <file>` **after** the prompt and redirect `< /dev/null` — `-i` takes multiple values, so a prompt placed after it is read as a second image path and Codex hangs on "Reading prompt from stdin..." (hit 2026-10-10). A reference image plus "change ONLY the text" kept the art nearly identical. Run from the output directory. About 1 minute per image; 4 parallel runs worked. Originals also land in `~/.codex/generated_images/`. Verify every line of text by viewing the output.
 
-### o3 — deep reasoning, high-stakes decisions (use selectively — slow and expensive)
+### o3 — deep reasoning, high-stakes decisions (use selectively — slow and expensive; UNVERIFIED on the ChatGPT account)
 ```bash
 codex exec -c model="o3" "[task]"
 ```
@@ -100,6 +109,16 @@ After every delegation, assess whether the result matched expectations:
 
 This feedback loop is how the system improves over time.
 
+## Failure Handling
+
+Sub-agents can fail. Handle gracefully:
+
+- **429 / capacity exhausted** → Gemini Pro and Flash share a quota pool via the Cloud Code proxy. If Pro is down, Flash is often down too. Fall back to GPT-4o (different quota) or proceed Claude-solo. Always tell the user: *"Gemini is at capacity — proceeding solo / falling back to GPT-4o."*
+- **Explicit request fails** → Still tell the user. Don't silently continue as if delegation happened.
+- **Fallback priority:** Gemini Pro → GPT-4o → Claude solo. Never silently eat a failure.
+
+Note capacity failures in the capability doc — they're signal.
+
 ## Common Mistakes
 
 | Mistake | Fix |
@@ -110,3 +129,5 @@ This feedback loop is how the system improves over time.
 | Raw-dumping sub-agent output | Synthesize; flag divergences on adversarial tasks |
 | Routing for parallel work | Use Claude's Agent tool for parallelism, not this skill |
 | Skipping cap doc update when surprised | The update loop is the point — don't skip it |
+| Assuming Flash works when Pro is down | They share quota — treat both as unavailable together |
+| Silently eating sub-agent failures | Always surface failures to the user with the fallback taken |
